@@ -194,11 +194,11 @@ toByteStrings (Array sh adata) = aux arrayElt adata
     aux ArrayEltRcchar          (AD_CChar s)    = wrap s
     aux ArrayEltRcschar         (AD_CSChar s)   = wrap s
     aux ArrayEltRcuchar         (AD_CUChar s)   = wrap s
-    aux (ArrayEltRvec2 ae)      (AD_V2 s)       = aux ae s
-    aux (ArrayEltRvec3 ae)      (AD_V3 s)       = aux ae s
-    aux (ArrayEltRvec4 ae)      (AD_V4 s)       = aux ae s
-    aux (ArrayEltRvec8 ae)      (AD_V8 s)       = aux ae s
-    aux (ArrayEltRvec16 ae)     (AD_V16 s)      = aux ae s
+    -- aux (ArrayEltRvec2 ae)      (AD_V2 s)       = aux ae s
+    -- aux (ArrayEltRvec3 ae)      (AD_V3 s)       = aux ae s
+    -- aux (ArrayEltRvec4 ae)      (AD_V4 s)       = aux ae s
+    -- aux (ArrayEltRvec8 ae)      (AD_V8 s)       = aux ae s
+    aux (ArrayEltRvec ae)     (AD_Vec _ s)      = aux ae s
     aux (ArrayEltRpair ae1 ae2) (AD_Pair s1 s2) = (aux ae1 s1, aux ae2 s2)
 
 
