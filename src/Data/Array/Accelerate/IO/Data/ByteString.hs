@@ -35,6 +35,7 @@ import Data.ByteString.Internal                                     as B
 import Foreign.ForeignPtr
 import Foreign.Storable
 import System.IO.Unsafe
+import GHC.TypeLits
 
 #if !MIN_VERSION_base(4,10,0)
 import GHC.ForeignPtr
@@ -116,24 +117,24 @@ fromByteStrings sh bs = Array (fromElt sh) (aux arrayElt bs)
     aux ArrayEltRword16         = wrap AD_Word16
     aux ArrayEltRword32         = wrap AD_Word32
     aux ArrayEltRword64         = wrap AD_Word64
-    aux ArrayEltRcshort         = wrap AD_CShort
-    aux ArrayEltRcushort        = wrap AD_CUShort
-    aux ArrayEltRcint           = wrap AD_CInt
-    aux ArrayEltRcuint          = wrap AD_CUInt
-    aux ArrayEltRclong          = wrap AD_CLong
-    aux ArrayEltRculong         = wrap AD_CULong
-    aux ArrayEltRcllong         = wrap AD_CLLong
-    aux ArrayEltRcullong        = wrap AD_CULLong
+    -- aux ArrayEltRcshort         = wrap AD_CShort
+    -- aux ArrayEltRcushort        = wrap AD_CUShort
+    -- aux ArrayEltRcint           = wrap AD_CInt
+    -- aux ArrayEltRcuint          = wrap AD_CUInt
+    -- aux ArrayEltRclong          = wrap AD_CLong
+    -- aux ArrayEltRculong         = wrap AD_CULong
+    -- aux ArrayEltRcllong         = wrap AD_CLLong
+    -- aux ArrayEltRcullong        = wrap AD_CULLong
     aux ArrayEltRhalf           = wrap AD_Half
     aux ArrayEltRfloat          = wrap AD_Float
     aux ArrayEltRdouble         = wrap AD_Double
-    aux ArrayEltRcfloat         = wrap AD_CFloat
-    aux ArrayEltRcdouble        = wrap AD_CDouble
+    -- aux ArrayEltRcfloat         = wrap AD_CFloat
+    -- aux ArrayEltRcdouble        = wrap AD_CDouble
     aux ArrayEltRbool           = wrap AD_Bool
     aux ArrayEltRchar           = wrap AD_Char
-    aux ArrayEltRcchar          = wrap AD_CChar
-    aux ArrayEltRcschar         = wrap AD_CSChar
-    aux ArrayEltRcuchar         = wrap AD_CUChar
+    -- aux ArrayEltRcchar          = wrap AD_CChar
+    -- aux ArrayEltRcschar         = wrap AD_CSChar
+    -- aux ArrayEltRcuchar         = wrap AD_CUChar
     aux (ArrayEltRvec ae)      = ad_v . aux ae
     --aux (ArrayEltRvec3 ae)      = AD_V3 . aux ae
     --aux (ArrayEltRvec4 ae)      = AD_V4 . aux ae
@@ -142,7 +143,7 @@ fromByteStrings sh bs = Array (fromElt sh) (aux arrayElt bs)
     aux (ArrayEltRpair ae1 ae2) = \(v1,v2) -> AD_Pair (aux ae1 v1) (aux ae2 v2)
 
 
-ad_v :: forall n. KnownNat n => GArrayData a -> GArrayData (Vec n a)
+ad_v :: forall n a. KnownNat n => GArrayData a -> GArrayData (Vec n a)
 ad_v = AD_Vec $ natVal $ natSing @n
 
 -- | /O(1)/. Convert an Accelerate 'Array' into a collection of strict
@@ -176,24 +177,24 @@ toByteStrings (Array sh adata) = aux arrayElt adata
     aux ArrayEltRword16         (AD_Word16 s)   = wrap s
     aux ArrayEltRword32         (AD_Word32 s)   = wrap s
     aux ArrayEltRword64         (AD_Word64 s)   = wrap s
-    aux ArrayEltRcshort         (AD_CShort s)   = wrap s
-    aux ArrayEltRcushort        (AD_CUShort s)  = wrap s
-    aux ArrayEltRcint           (AD_CInt s)     = wrap s
-    aux ArrayEltRcuint          (AD_CUInt s)    = wrap s
-    aux ArrayEltRclong          (AD_CLong s)    = wrap s
-    aux ArrayEltRculong         (AD_CULong s)   = wrap s
-    aux ArrayEltRcllong         (AD_CLLong s)   = wrap s
-    aux ArrayEltRcullong        (AD_CULLong s)  = wrap s
+    -- aux ArrayEltRcshort         (AD_CShort s)   = wrap s
+    -- aux ArrayEltRcushort        (AD_CUShort s)  = wrap s
+    -- aux ArrayEltRcint           (AD_CInt s)     = wrap s
+    -- aux ArrayEltRcuint          (AD_CUInt s)    = wrap s
+    -- aux ArrayEltRclong          (AD_CLong s)    = wrap s
+    -- aux ArrayEltRculong         (AD_CULong s)   = wrap s
+    -- aux ArrayEltRcllong         (AD_CLLong s)   = wrap s
+    -- aux ArrayEltRcullong        (AD_CULLong s)  = wrap s
     aux ArrayEltRhalf           (AD_Half s)     = wrap s
     aux ArrayEltRfloat          (AD_Float s)    = wrap s
     aux ArrayEltRdouble         (AD_Double s)   = wrap s
-    aux ArrayEltRcfloat         (AD_CFloat s)   = wrap s
-    aux ArrayEltRcdouble        (AD_CDouble s)  = wrap s
+    -- aux ArrayEltRcfloat         (AD_CFloat s)   = wrap s
+    -- aux ArrayEltRcdouble        (AD_CDouble s)  = wrap s
     aux ArrayEltRbool           (AD_Bool s)     = wrap s
     aux ArrayEltRchar           (AD_Char s)     = wrap s
-    aux ArrayEltRcchar          (AD_CChar s)    = wrap s
-    aux ArrayEltRcschar         (AD_CSChar s)   = wrap s
-    aux ArrayEltRcuchar         (AD_CUChar s)   = wrap s
+    -- aux ArrayEltRcchar          (AD_CChar s)    = wrap s
+    -- aux ArrayEltRcschar         (AD_CSChar s)   = wrap s
+    -- aux ArrayEltRcuchar         (AD_CUChar s)   = wrap s
     -- aux (ArrayEltRvec2 ae)      (AD_V2 s)       = aux ae s
     -- aux (ArrayEltRvec3 ae)      (AD_V3 s)       = aux ae s
     -- aux (ArrayEltRvec4 ae)      (AD_V4 s)       = aux ae s
