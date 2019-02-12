@@ -77,7 +77,7 @@ fromIArray iarr = fromFunction sh (\ix -> iarr IArray.! fromIxShapeRepr (offset 
 --
 {-# INLINE toIArray #-}
 toIArray
-    :: forall ix sh a e. (IxShapeRepr (EltRepr ix) ~ EltRepr sh, IArray a e, IArray.Ix ix, Shape sh, Elt ix)
+    :: forall ix sh a e. (IxShapeRepr (EltRepr ix) ~ EltRepr sh, IArray a e, IArray.Ix ix, Shape sh, Elt ix, Elt e)
     => Maybe ix           -- ^ if 'Just' this as the index lower bound, otherwise the array is indexed from zero
     -> Array sh e
     -> a ix e
