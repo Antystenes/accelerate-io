@@ -1,6 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TemplateHaskell     #-}
 {-# LANGUAGE TypeFamilies        #-}
+{-# LANGUAGE TypeApplications    #-}
 -- |
 -- Module      : Data.Array.Accelerate.IO.Data.Array.IArray
 -- Copyright   : [2016..2017] Trevor L. McDonell
@@ -60,7 +61,7 @@ fromIArray iarr = fromFunction sh (\ix -> iarr IArray.! fromIxShapeRepr (offset 
     -- index range of the IArray
     --
     offset :: forall sh. Shape sh => sh -> sh -> sh
-    offset ix0 ix = toElt $ go (eltType (undefined::sh)) (fromElt ix0) (fromElt ix)
+    offset ix0 ix = toElt $ go (eltType @sh) (fromElt ix0) (fromElt ix)
       where
         go :: TupleType ix -> ix -> ix -> ix
         go TypeRunit                                                                    ()       ()    = ()
@@ -96,7 +97,7 @@ toIArray mix0 arr = IArray.array bnds0 [(offset ix, arr ! toIxShapeRepr ix) | ix
     offset' ix0 ix
       = fromIxShapeRepr
       . (toElt :: EltRepr sh -> sh)
-      $ go (eltType (undefined::sh)) (fromElt (toIxShapeRepr ix0 :: sh)) (fromElt (toIxShapeRepr ix :: sh))
+      $ go (eltType @sh) (fromElt (toIxShapeRepr ix0 :: sh)) (fromElt (toIxShapeRepr ix :: sh))
       where
         go :: TupleType sh' -> sh' -> sh' -> sh'
         go TypeRunit                                                                    ()       ()    = ()
