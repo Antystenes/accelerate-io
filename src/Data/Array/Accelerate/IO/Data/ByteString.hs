@@ -134,13 +134,16 @@ fromByteStrings sh bs = Array (fromElt sh) (aux arrayElt bs)
     aux ArrayEltRcchar          = wrap AD_CChar
     aux ArrayEltRcschar         = wrap AD_CSChar
     aux ArrayEltRcuchar         = wrap AD_CUChar
-    aux (ArrayEltRvec2 ae)      = AD_V2 . aux ae
-    aux (ArrayEltRvec3 ae)      = AD_V3 . aux ae
-    aux (ArrayEltRvec4 ae)      = AD_V4 . aux ae
-    aux (ArrayEltRvec8 ae)      = AD_V8 . aux ae
-    aux (ArrayEltRvec16 ae)     = AD_V16 . aux ae
+    aux (ArrayEltRvec ae)      = ad_v . aux ae
+    --aux (ArrayEltRvec3 ae)      = AD_V3 . aux ae
+    --aux (ArrayEltRvec4 ae)      = AD_V4 . aux ae
+    --aux (ArrayEltRvec8 ae)      = AD_V8 . aux ae
+    --aux (ArrayEltRvec16 ae)     = AD_V16 . aux ae
     aux (ArrayEltRpair ae1 ae2) = \(v1,v2) -> AD_Pair (aux ae1 v1) (aux ae2 v2)
 
+
+ad_v :: forall n. KnownNat n => GArrayData a -> GArrayData (Vec n a)
+ad_v = AD_Vec $ natVal $ natSing @n
 
 -- | /O(1)/. Convert an Accelerate 'Array' into a collection of strict
 -- 'ByteStrings'. The element type @e@ will determine the structure of the
